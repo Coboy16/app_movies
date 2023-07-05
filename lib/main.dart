@@ -1,9 +1,33 @@
 import 'package:app_movie/providers/movies_provider.dart';
 import 'package:app_movie/screens/screens.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(const AppState());
+import 'firebase_options.dart';
+
+// void main() => runApp(const AppState());
+
+//Agregamos crashlytics
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  PlatformDispatcher.instance.onError = (exception, stackTrace) {
+    FirebaseCrashlytics.instance
+        .recordError(exception, stackTrace, fatal: true);
+    return true;
+  };
+  runApp(const AppState());
+}
 
 class AppState extends StatelessWidget {
   const AppState({super.key});

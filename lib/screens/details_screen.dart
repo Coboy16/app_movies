@@ -22,7 +22,18 @@ class DetailsScreen extends StatelessWidget {
                 _Overview(movie),
                 _Overview(movie),
                 _Overview(movie),
-                CastingCards(movie.id)
+                CastingCards(movie.id),
+                GestureDetector(
+                  onTap: () => throw Exception(),
+                  child: Container(
+                    height: 50,
+                    color: Colors.red,
+                    child: const Center(
+                      child: Text('Error'),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5)
               ],
             ),
           ),
